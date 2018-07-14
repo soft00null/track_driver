@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+* {
+  box-sizing: border-box;
+}
+.menu {
+  background-color:#e5e5e5;
+  float:left;
+  width:20%;
+  padding:15px;
+  margin-top:7px;
+  text-align:center;
+}
+
+.main {
+  float:left;
+  width:60%;
+  padding:0 20px;
+}
+.right {
+  background-color:#e5e5e5;
+  float:left;
+  width:20%;
+  padding:15px;
+  margin-top:7px;
+  text-align:center;
+}
+
+@media only screen and (max-width:620px) {
+  /* For mobile phones: */
+  .menu, .main, .right {
+    width:100%;
+  }
+}
+    
+</style>
+
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://www.gstatic.com/firebasejs/5.2.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/5.2.0/firebase-firestore.js"></script>
+<script src="http://maps.google.com/maps/api/js?sensor=false"></script>
+
+<script>
+
+function GetURLParameter(sParam) // fetch driver id from url
+    {
+      var sPageURL = window.location.search.substring(1);
+      var sURLVariables = sPageURL.split('&');
+
+      for (var i = 0; i < sURLVariables.length; i++)
+      {
+        var sParameterName = sURLVariables[i].split('=');
+        if (sParameterName[0] == sParam)
+        {
+          return sParameterName[1];
+
+        }
+      }
+    }
+
+  var driver_id = GetURLParameter('id'); //get driver ID from URL
+
+
+
+</script>
+
+
+</head>
+<body style="font-family:Verdana;color:#aaaaaa;">
+
+
+
+<div style="background-color:#e5e5e5;padding:15px;text-align:center;">
+  <h1>Driver tracking</h1>
+</div>
+
+<div style="overflow:auto">
+
+  <div class="menu">
+     <h2 id="driver_name"></h2> 
+  </div>
+
+  <div class="main">
+  
+    <div id="map" style="width:100%;height:200px"></div>
+
+    <script>
+
+   
+
+function myMap() {
+
+
+
+    var config = {
+    apiKey: "AIzaSyDX_iGo-M6iSAyhlBZuIw2SvlRlpNAI5Pg",
+    authDomain: "test-4c93f.firebaseapp.com",
+    databaseURL: "https://test-4c93f.firebaseio.com",
+    projectId: "test-4c93f",
+    storageBucket: "test-4c93f.appspot.com",
+    messagingSenderId: "1057677449640"
+  };
+
+firebase.initializeApp(config);
+
+// Initialize Cloud Firestore through Firebase
+var db = firebase.firestore();
+
+
+console.log(driver_id); //driver id 
+
+
+var docRef = db.collection("driver").doc(driver_id);
+
+  
+  docRef.get().then(function(doc) {
+    if (doc.exists) {
+
+        name = doc.data().name; //declaring the name of the user
+        lat = doc.data().current_location.latitude; 
+        long = doc.data().current_location.longitude; 
+      
+
+        console.log(name);
+        console.log(lat);
+        console.log(long);
+
+        var node = document.getElementById("driver_name");
+        var textnode = document.createTextNode(name); //driver name
+        node.appendChild(textnode);
+
+
+
+        //fetch geo reverse 
+
+       var geocoder = new google.maps.Geocoder();
+       var latLng = new google.maps.LatLng(lat, long);
+
+       if (geocoder) {
+          geocoder.geocode({ 'latLng': latLng}, function (results, status) {
+             if (status == google.maps.GeocoderStatus.OK) {
+
+                console.log(results[0].formatted_address);
+
+                var node_location = document.getElementById("driver_address");
+                var textnode_location = document.createTextNode(results[0].formatted_address); //driver address 
+                node_location.appendChild(textnode_location);
+
+             }
+             else {
+                console.log("Geocoding failed: " + status);
+             }
+          });
+       }   
+
+
+
+        var myCenter = new google.maps.LatLng(lat, long);
+        var mapCanvas = document.getElementById("map");
+        var mapOptions = {center: myCenter, zoom: 16};
+        var map = new google.maps.Map(mapCanvas, mapOptions);
+        var marker = new google.maps.Marker({position:myCenter});
+        marker.setMap(map);
+
+        var infowindow = new google.maps.InfoWindow({
+          content: name // name of the vehicle driver 
+        });
+        infowindow.open(map,marker);
+        
+        
+    } else {
+        // doc.data() will be undefined in this case
+        console.log("No such document!");
+    }
+
+    }).catch(function(error) {
+        console.log("Error getting document:", error);
+    });
+     
+
+
+      }
+
+    </script>
+
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBrY7iwF9PaNTk4dqk_LaszCTREUoYnWYY&callback=myMap"></script>
+
+
+  </div>
+
+  <div class="right">
+   
+    <p id="driver_address"></p>
+  </div>
+</div>
+
+<div style="background-color:#e5e5e5;text-align:center;padding:10px;margin-top:7px;"> 2018 &copy; copyright Ally Driver safety platform</div>
+
+</body>
+</html>
