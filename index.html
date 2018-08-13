@@ -146,8 +146,8 @@ var docRef = db.collection("drivers").doc(driver_id);
 
                 var node_location = document.getElementById("driver_address");
                 var textnode_location = document.createTextNode(results[0].formatted_address); //driver address 
-                //node_location.appendChild(textnode_location);
-                node_location.innerHTML += textnode_location;
+                node_location.appendChild(textnode_location);
+                //node_location.innerHTML += textnode_location;
 
              }
              else {
