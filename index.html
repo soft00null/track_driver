@@ -112,7 +112,7 @@ var db = firebase.firestore();
 console.log(driver_id); //driver id 
 
 
-var docRef = db.collection("driver").doc(driver_id);
+var docRef = db.collection("drivers").doc(driver_id);
 
   
   docRef.get().then(function(doc) {
