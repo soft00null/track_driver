@@ -142,10 +142,12 @@ var docRef = db.collection("drivers").doc(driver_id);
           geocoder.geocode({ 'latLng': latLng}, function (results, status) {
              if (status == google.maps.GeocoderStatus.OK) {
 
-                console.log(results[0].formatted_address);
+               console.log(results[0].formatted_address);
+               var live_address= results[0].formatted_address;
+               console.log(live_address);
 
                 var node_location = document.getElementById("driver_address");
-                var textnode_location = document.createTextNode(results[0].formatted_address); //driver address 
+                var textnode_location = document.createTextNode(live_address); //driver address 
                 node_location.appendChild(textnode_location);
                 //node_location.innerHTML += textnode_location;
 
