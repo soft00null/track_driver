@@ -110,6 +110,8 @@ var docRef = db.collection("drivers").doc(driver_id).collection("profile");
         //long = doc.data().current_location.longitude;  
       
       value = doc.data().current_location;
+      lat = value[0]; 
+      long = value[1];  
       
       console.log(value);
       
