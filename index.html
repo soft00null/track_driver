@@ -104,8 +104,20 @@ var docRef = db.collection("drivers").doc(driver_id).collection("profile");
         console.log(doc.id, " => ", doc.data());
 
         name = doc.data().name; //declaring the name of the user
-        lat = doc.data().current_location.latitude; 
-        long = doc.data().current_location.longitude;       
+      
+        // get location from geo point
+        //lat = doc.data().current_location.latitude; 
+        //long = doc.data().current_location.longitude;  
+      
+      value = doc.data().current_location;
+      
+      console.log(value);
+      
+      value = value.replace(/[\(\)]/g,'').split(',');
+
+      console.log(value[0]);
+      console.log(value[1]);
+      
         var node = document.getElementById("driver_name");
         var textnode = document.createTextNode(name); //driver name
         node.appendChild(textnode);   //fetch geo reverse 
