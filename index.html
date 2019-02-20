@@ -84,18 +84,18 @@ function GetURLParameter(sParam) // fetch driver id from url
    
 function myMap() {
     var config = {
-    apiKey: "AIzaSyBrY7iwF9PaNTk4dqk_LaszCTREUoYnWYY",
-    authDomain: "ally-cfdb1.firebaseapp.com",
-    databaseURL: "https://ally-cfdb1.firebaseio.com",
-    projectId: "ally-cfdb1",
-    storageBucket: "ally-cfdb1.appspot.com",
-    messagingSenderId: "589255281629"
+    apiKey: "AIzaSyDGa2FAXAySfpTyXVtdVUoyeX_KTPSWcJg",
+    authDomain: "humsafer-dcd9d.firebaseapp.com",
+    databaseURL: "https://humsafer-dcd9d.firebaseio.com",
+    projectId: "humsafer-dcd9d",
+    storageBucket: "humsafer-dcd9d.appspot.com",
+    messagingSenderId: "893397024064"
   };
 firebase.initializeApp(config);
 // Initialize Cloud Firestore through Firebase
 var db = firebase.firestore();
 console.log(driver_id); //driver id 
-var docRef = db.collection("drivers").doc(driver_id).collection("profile");
+var docRef = db.collection("sandbox_drivers").doc(driver_id).collection("profile");
   
   docRef.get().then(function(querySnapshot) {
    
